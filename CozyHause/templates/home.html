@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>CozyHause</title>
+{% endblock %}
+
+{% block content %}
+<div class="branding">
+    <img src="{{url_for('static', filename='logo.png')}}" alt="CozyHauseLogo" class="logo">
+</div>
+<br>
+<br>
+<div class="container">
+    <form method="post" autocomplete="off">
+        <div class="name">
+            <h5 class="label">Tell us about You</h5>
+            <input type="text" name="name" placeholder="{{placeholder}}" value="{{name}}" class="formdataException">
+            <br>
+            <br>
+            <div class="favcolorWrapper" id="favcolorWrapper">
+                <select name="favcolor" id="favcolor" class="favcolor">
+                    <option value="Favourite_Color">Click to choose your Favourite Color!</option>
+                    <option value="#ff758a">Watermelon</option>
+                    <option value="#C66E4E">Chocolate</option>
+                    <option value="#ff8c00">Orange</option>
+                    <option value="#12baff">Sky</option>
+                    <option value="#286952">Leaf</option>
+                    <option value="#4F86F7">BlueBerry</option>
+                    <option value="#36454f">Charcoal</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="hauseWrapper" id="hauseWrapper">
+            <div class="join">
+                <h5 class="label">Join a Hause</h5>
+                <input type="text" placeholder="Enter the Hause Code" name="code" value="{{code}}" class="formdata"/>
+                <button type="submit" name="join">Join Hause</button>
+            </div>
+
+            <h3 class="or">OR</h3>
+
+            <div class="create">
+                <h5 class="label">Create a Hause</h5>
+                <input type="text" placeholder="Enter your Hause Name" name="hauseName" value="{{hauseName}}" class="formdata"/>
+                <button type="submit" name="create">Create Hause</button>
+            </div>
+        </div>
+        <br>
+    </form>
+
+    {% if error %}
+    <div class="errors">
+        <h2 class="errors_text">{{error}}</h2>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

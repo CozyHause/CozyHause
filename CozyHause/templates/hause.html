@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>{{hauseName}}</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="info">
+    <h1 class="hause_name">{{hauseName}}</h1>
+    <div class="hauseFunctions">
+        <button class="leave" onClick="leave()"><i class="fa-solid fa-right-from-bracket"></i> Leave</button>
+        <button class="invite" onClick="displayInviteModal()"><i class="fa-solid fa-user-plus"></i> Invite</button>
+    </div>
+</div>
+
+<div class="message_box">
+    <div class="messages" id="messages"></div>
+
+    <div class="inputs">
+        <input type="text" rows="5" placeholder="Message in {{hauseName}}" id="message" autocomplete="off">
+        <button name="send" id="send" onClick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<div class="inviteModal_bg" id="inviteModal_bg">
+    <div class="inviteModal_content">
+        <div class="inviteModal_header">
+            <span class="close_invite" id="close_invite">&times;</span>
+            <h2 class="inviteModal_header_text">Invite Others</h2>
+        </div>
+
+        <div class="inviteModal_body">
+            <p class="inviteModal_body_text">Invite Others by sending them the Hause's Code</p>
+            <h3 class="inviteModal_body_hauseCode">Code: {{hauseCode}}</h3>
+            <button class="inviteModal_body_copy" onClick="copy_hauseCode()" id="copy_hauseCode"><i class="fa-solid fa-copy"></i> Copy Code</button>
+        </div>
+    </div>
+</div>
+
+<script src="{{url_for('static', filename='scripts/messaging.js')}}"></script>
+<script type="text/javascript">
+    //invite modal
+    var modal = document.getElementById("inviteModal_bg");
+    var close_invite = document.getElementById("close_invite");
+
+    function displayInviteModal() {
+        modal.style.display = "block";
+    }
+
+    close_invite.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    function copy_hauseCode() {
+        var hauseCode_copy = "{{hauseCode}}"
+
+        navigator.clipboard.writeText(hauseCode_copy);
+
+        //change text
+        var copy_hauseCode_button = document.getElementById("copy_hauseCode");
+        copy_hauseCode_button.innerHTML = "Copied!";
+        
+        //change it back to "Copy code after 1.25 seconds"
+        const changeBack = setTimeout(changeBackToCopy, 1250);
+        function changeBackToCopy() {
+            copy_hauseCode_button.innerHTML ="<i class='fa-solid fa-copy'></i> Copy Code";
+        }
+    }
+
+</script>
+
+{% endblock %}
