@@ -5,7 +5,7 @@ from string import ascii_uppercase
 import time
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "verrriii_Sekretttt_kIeyeeeballsballsballslolololololololololololololooololoolololoololllolllol__:DDDD"
+app.config["SECRET_KEY"] = "verrriii_Sekretttt_kIeyeee__:DDDD"
 socketio = SocketIO(app)
 
 hauses = {}
@@ -36,15 +36,6 @@ leaveVerb = [
     "set foot out of",
     "jumped out of",
     "left"
-]
-
-colors = [
-    "#ff758a",#watermelon pink
-    "#C66E4E",#brown
-    "#ff8c00",#orange
-    "#12baff",#blue
-    "#000000"#black,
-    "#286952",#green
 ]
 
 nword_list = [
@@ -84,6 +75,17 @@ def memberOrMembers(members):
         return "member"
     else:
         return "members"
+
+def generateCode(length):
+    while True:
+        code = ""
+        for i in range(length):
+            code += random.choice(ascii_uppercase)
+
+        if code not in hauses:
+            break
+
+    return code
 
 @app.route('/', methods=["GET", "POST"])
 def home():
@@ -140,8 +142,8 @@ def home():
         hause = code
         
         if create != False: 
-            hause = "".join(random.choices(ascii_uppercase, k=4))
-            hauses[hause] = {"messages" : [], "members" : 0, "members_list": [], "name" : hauseName, "owner" : name, "nwords": 0}
+            hause = generateCode(4)
+            hauses[hause] = {"messages" : [], "members" : 0, "members_list": [], "name" : hauseName, "owner" : name, "nwords": 0, "code": hause}
         
             session["name"] = name
             session["hause"] = hause
@@ -179,6 +181,46 @@ def hause():
         
     return render_template("hause.html", hauseCode=hause, hauseName=hauses[hause]["name"], messageHisory=hauses[hause]["messages"])
 
+@app.route('/discover', methods=["POST", "GET"])
+def discover():
+    session.clear()
+    if request.method == "POST":
+        #retrieve info from the form#
+        name = request.form.get("name")
+        favColor = request.form.get("favcolor")
+        code = request.form.get("hauseCode")
+        
+        #check for info
+        if not name:
+            return render_template("discover.html", error="Please enter your Name",
+                                  name = name,
+                                  placeholder = random.choice(placeholder),
+                                  public_hauses = hauses)
+
+        if favColor == "Favourite_Color":
+            return render_template("discover.html", error="Please tell us your Favourite Color!",
+                  name = name,
+                  placeholder = random.choice(placeholder), public_hauses = hauses)
+
+        if code in hauses and name in hauses[code]["members_list"]:
+            return render_template("discover.html", error="A person with the name you chose already exists in the hause! Try a more unique name!",
+                  name = name,
+                  placeholder = random.choice(placeholder),
+                  public_hauses = hauses)
+
+        #do stuff
+        session["name"] = name
+        session["hause"] = code
+        session["color"] = favColor
+
+        return redirect(url_for("hause"))
+
+    return render_template("discover.html", public_hauses=hauses, placeholder=random.choice(placeholder))
+
+@app.route('/home', methods=['GET', 'POST'])
+def home_redirect():
+    return redirect(url_for("home"))
+
 @socketio.on("connect")
 def connect():
     name = session.get("name")
@@ -200,7 +242,6 @@ def connect():
     emit("join_leave", {"message" : join_message, "date": time.ctime()}, room=hause)
     emit("memberCount_join", {"message" : join_messageMemberCount, "members" : ordinal, "hauseName" : hauseName}, room=hause)
 
-    
     #for debugging
     print(f"{name} has {random.choice(enterVerb)} the Hause and is the {ordinal} member of '{hauseName}'. Code: {hause}")
 
@@ -256,8 +297,6 @@ def chatMessage(message):
 
     #for debugging
     print(f"{name} said {message['message']}. Code: {hause}")
-
-
 
 if __name__ == "__main__":
     socketio.run(app, host='0.0.0.0', debug=False, allow_unsafe_werkzeug=True)
