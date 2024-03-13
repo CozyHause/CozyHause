@@ -129,7 +129,7 @@ img {
     -webkit-appearance: none;
     appearance: none;
 
-    transition: 0.05s;
+    transiton: 0.05s;
 }
 
 .members {
@@ -137,7 +137,6 @@ img {
 }
 
 /* HAUSE */
-
 
 .message_box {
     display: flex;
@@ -191,6 +190,7 @@ img {
 .date {
     font-size: 14px;
     color: #65615E;
+    font-family: 'IBM Plex Mono', monospace;
 }
 
 .hause_name {
@@ -220,11 +220,6 @@ img {
     background-color: #ff758a;
     border-radius: 25px;
 }
-#message { /* message input field */
-    bottom: 0;
-    postion: fixed;
-} 
-
 
 /* hause function buttons */
 .hauseFunctions {
@@ -242,6 +237,10 @@ img {
 
 .invite:hover {
     background-color: #0fe60f;
+}
+
+.invite {
+    border-left: 0px;
 }
 
 /* invite modal */
@@ -331,14 +330,6 @@ img {
     text-align: center;
 }
 
-.errors {
-    text-align: center;
-    font-family: 'IBM Plex Mono', monospace;
-    font-weight: 900;
-    font-size: 12px;
-    color: #ff758a;
-}
-
 .close_invite {
     color: white;
     float: right;
@@ -358,6 +349,14 @@ img {
     width: 30%;
     margin-left: 35%;
     margin-bottom: 2%;
+}
+
+.errors {
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 900;
+    font-size: 12px;
+    color: #ff758a;
 }
 
 select {
@@ -396,4 +395,239 @@ select {
         top: 0;
         opacity: 1;
     }
+}
+
+/* discover */
+.discoverWrapper {
+    text-align: left;
+}
+
+.hauseJoinContainer {
+    padding: 5px;
+    margin-right: 25%;
+    margin-left: 25%;
+    border-radius: 25px;
+    border: 3px solid black;
+}
+
+.hauseJoin {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hauseJoinModal_button {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 900;
+    font-size: 15px;
+    /*height: 42px;
+    margin-top: 21px;*/
+    height: 100px;
+}
+
+.small {
+    font-size: 14px;
+    color: #65615E;
+    font-family: 'IBM Plex Mono', monospace;
+    align-self: center;
+    margin-top: 5px;
+    display: block;
+}
+
+.hauseName {
+    font-size: 25px;
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+/* hause name modal */
+.nameModal_bg {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 20vh;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.2);
+}
+
+.nameModal_content {
+    position: relative;
+    background-color: #ffffff;
+    margin: auto;
+    padding: 0px;
+    border: 1px solid #000000;
+    width: 60%;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+
+}
+
+.nameModal_header {
+    padding: 4px 16px;
+    background-color: #ff758a;
+    color: white;
+}
+
+.nameModal_header_text {
+    text-align: center;
+    font-family: 'Rubik Mono One', monospace;
+    font-size: 22px;
+    color: #ffffff;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    text-align: center;
+    padding: 5px;
+}
+
+.nameModal_body {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 16px;
+}
+
+.hauseInput {
+    padding: 8px 16px;
+    border-radius: 25px;
+    border: 3px solid black;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 900;
+    font-size: 16px;
+    width: 47%;
+    margin-left: 25%;
+}
+
+.hauseInput:focus {
+    outline: 3px solid #ff758a;
+    transition: 0.05s;
+}
+
+.hauseFavColor {
+    padding: 8px 16px;
+    border-radius: 25px;
+    border: 3px solid black;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 900;
+    font-size: 16px;
+
+    width: 50%;
+    margin-left: 25%;
+
+    /*remove default arrow*/
+    -webkit-appearance: none;
+    appearance: none;
+
+    transiton: 0.05s;
+}
+
+.hauseJoinModal_button_form {
+    width: 50%;
+    margin-left: 25%;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+.nameModal_body_text {
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 900;
+    font-size: 18px;
+    color: #65615E;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    text-align: center;
+    padding: 5px;
+}
+
+.nameModal_body_hauseCode {
+    text-align: center;
+    font-family: 'Rubik Mono One', monospace;
+    font-size: 35px;
+    color: #65615E;
+    user-drag: none;
+    text-align: center;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    text-align: center;
+}
+
+.close_name {
+    color: white;
+    float: right;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.close_name:hover,
+.close_name:focus {
+    cursor: pointer;
+}
+
+.hauseJoinModal_button_form {
+    background-color: #ffe0e7
+}
+
+/* menu */
+.menu {
+    display: flex;
+    justify-content:  center;
+}
+
+.redirectHause_button {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    /*height: 42px;
+    margin-top: 21px;*/
+    width: 25vw;
+    border-right: 0px;
+}
+
+.redirectDiscover_button {
+    width: 25vw;
+}
+
+.noHause {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.reload_button {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+
+    border: 2px solid black;
+    padding: 16px;
+
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 900;
+    font-size: 16px;
+}
+
+.reload_button:hover {
+    background-color: #ededed;
 }
