@@ -9,6 +9,10 @@
     <img src="{{url_for('static', filename='logo.png')}}" alt="CozyHauseLogo" class="logo">
 </div>
 <br>
+<div class="menu">
+    <button class="redirectHause_button selected">Hauses</button>
+    <button class="redirectDiscover_button" onClick="redirectDiscover()"">Discover</button>
+</div>
 <br>
 <div class="container">
     <form method="post" autocomplete="off">
@@ -19,7 +23,6 @@
             <br>
             <div class="favcolorWrapper" id="favcolorWrapper">
                 <select name="favcolor" id="favcolor" class="favcolor">
-                    <option value="Favourite_Color">Click to choose your Favourite Color!</option>
                     <option value="#ff758a">Watermelon</option>
                     <option value="#C66E4E">Chocolate</option>
                     <option value="#ff8c00">Orange</option>
@@ -35,7 +38,7 @@
             <div class="join">
                 <h5 class="label">Join a Hause</h5>
                 <input type="text" placeholder="Enter the Hause Code" name="code" value="{{code}}" class="formdata"/>
-                <button type="submit" name="join">Join Hause</button>
+                <button type="submit" name="join" class="joinButton">Join Hause</button>
             </div>
 
             <h3 class="or">OR</h3>
@@ -43,7 +46,7 @@
             <div class="create">
                 <h5 class="label">Create a Hause</h5>
                 <input type="text" placeholder="Enter your Hause Name" name="hauseName" value="{{hauseName}}" class="formdata"/>
-                <button type="submit" name="create">Create Hause</button>
+                <button type="submit" name="create" class="createButton">Create Hause</button>
             </div>
         </div>
         <br>
@@ -55,5 +58,11 @@
     </div>
     {% endif %}
 </div>
+
+<script type="text/javascript">
+    function redirectDiscover() {
+        window.location.replace("/discover");
+    }
+</script>
 
 {% endblock %}
