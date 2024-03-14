@@ -58,7 +58,37 @@ const create_memberCount_join = (message, members, hauseName) => {
     messages.scrollTo(0, messages.scrollHeight);
 };
 
-const create_nwordcounter = (nwords) => {
+const create_nwordcounterlessthan30 = (nwords, word) => {
+    const nwordcounter_content = `
+        <div class="message">
+            <span>
+                <strong>N-Word Counter: </strong>${nwords} ${word} reached, ${30-nwords} more to go!
+            </span>
+        </div>
+    `;
+
+    messages.innerHTML += nwordcounter_content;
+
+    messages.scrollTo(0, messages.scrollHeight);
+};
+
+const nwordcounter30 = () => {
+    const nwordcounter_content = `
+        <div class="message">
+            <span>
+                <strong>N-Word Counter: </strong> THIS HAUSE HAS ATTAINED DIVINE COTTON FARMING POWERS!
+            </span>
+        </div>
+    `;
+    divinenword = document.getElementById("divinenword");
+    
+    divinenword.play(0)
+    messages.innerHTML += nwordcounter_content;
+
+    messages.scrollTo(0, messages.scrollHeight);
+};
+
+const create_nwordcountermorethan30 = (nwords) => {
     const nwordcounter_content = `
         <div class="message">
             <span>
@@ -72,7 +102,6 @@ const create_nwordcounter = (nwords) => {
     messages.scrollTo(0, messages.scrollHeight);
 };
 
-//listeners
 socketio.on("join_leave", (data) => {
     create_join_leave(data.message, data.date);
 });
@@ -89,10 +118,17 @@ socketio.on("chatMessage_send", (data) => {
     create_chatMessage(data.name, data.message, data.date, data.color);
 });
 
-socketio.on("nwordcounter", (data) => {
-    create_nwordcounter(data.nwords);
+socketio.on("nwordcounterlessthan30", (data) => {
+    create_nwordcounterlessthan30(data.nwords, data.word);
 });
-//--------------------------------------------
+
+socketio.on("nwordcounter30", (data) => {
+    nwordcounter30(data.nwords);
+});
+
+socketio.on("nwordcountermorethan30", (data) => {
+    create_nwordcountermorethan30(data.nwords);
+});
 
 const sendMessage = () => {
     const messageInput = document.getElementById('message');
@@ -114,3 +150,4 @@ document.getElementById('message').addEventListener("keypress", function(event) 
     document.getElementById("send").click();
   }
 });
+
