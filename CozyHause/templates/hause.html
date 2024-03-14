@@ -7,6 +7,7 @@
 {% block content %}
 
 <div class="info">
+    <!-- <h1 class="hause_code">Code: {{hauseCode}}</h1> -->
     <h1 class="hause_name">{{hauseName}}</h1>
     <div class="hauseFunctions">
         <button class="leave" onClick="leave()"><i class="fa-solid fa-right-from-bracket"></i> Leave</button>
@@ -37,6 +38,7 @@
         </div>
     </div>
 </div>
+<audio src="{{url_for('static', filename='divinenword.mp3')}}" style="display: none;" id="divinenword"></audio>
 
 <script src="{{url_for('static', filename='scripts/messaging.js')}}"></script>
 <script type="text/javascript">
