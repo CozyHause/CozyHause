@@ -51,7 +51,63 @@ nword_list = [
     "nigggggerr",
     "niggerrr",
     "niggerrrr",
+    "👨🏿",
+    "⚫",
+    "👨🏿‍🦲",
+    "🧑🏿"
 ]
+
+emojis = {
+    ":smily:" : "😀",
+    ":smile:" : "😀",
+    ":smiley:" : "😀",
+    ":smileyface:" : "😀",
+    ":smiley_face:": "😀",
+    ":laugh:" : "😂",
+    ":laughing:" : "😂",
+    ":laughter:" : "😂",
+    ":laughing_face:" : "😂",
+    ":skull:" : "💀",
+    ":skull_emoji:" : "💀",
+    ":skull_face:" : "💀",
+    ":moyai:" : "🗿",
+    ":moyai_emoji:" : "🗿",
+    ":moyai_face:" : "🗿",
+    ":moyaii:" : "🗿",
+    ":moyaiii:" : "🗿",
+    ":wine:" : "🍷",
+    ":wine_emoji:" : "🍷",
+    ":wine_glass:" : "🍷",
+    ":wine_glass_emoji:" : "🍷",
+    ":wineglass:" : "🍷",
+    ":crying:" : "😭",
+    ":cry:" : "😭",
+    ":sob:" : "😭",
+    ":sobbing:" : "😭",
+    ":sobbing_face:" : "😭",
+    ":sad:" : "😢",
+    ":sad_face:" : "😢",
+    ":sad_emoji:" : "😢",
+    ":sadface:" : "😢",
+    ":duck:" : "🦆",
+    ":duckling:" : "🦆",
+    ":duck_emoji:" : "🦆",
+    ":nigga:" : "👨🏿",
+    ":nigger:" : "👨🏿",
+    ":niga:" : "👨🏿",
+    ":brinjal:" : "🍆",
+    ":eggplant:" : "🍆",
+    ":penis:" : "🍆",
+    ":dick:" : "🍆",
+    ":pp:" : "🍆",
+    ":ass:" : "🍑",
+    ":booty:" : "🍑",
+    ":asscheeks:" : "🍑",
+    ":bootycheeks:" : "🍑",
+    ":sex:" : "🍆💦🍑",
+    ":spank:" : "✋🏻🍑",
+    ":looksmaxxing:" : "🧏‍♂🤫"
+}
 
 def convert_nth(n):
     nstr = str(n)
@@ -76,6 +132,12 @@ def memberOrMembers(members):
     else:
         return "members"
 
+def nwordornwords(nwords):
+    if nwords == 1:
+        return "N-Word"
+    else:
+        return "N-Words"
+
 def generateCode(length):
     while True:
         code = ""
@@ -86,6 +148,12 @@ def generateCode(length):
             break
 
     return code
+
+def replace_msg(text, replacements):
+    for key, value in replacements.items():
+        text = text.replace(key, value)
+        
+    return text
 
 @app.route('/', methods=["GET", "POST"])
 def home():
@@ -182,7 +250,7 @@ def hause():
     return render_template("hause.html", hauseCode=hause, hauseName=hauses[hause]["name"], messageHisory=hauses[hause]["messages"])
 
 @app.route('/discover', methods=["POST", "GET"])
-def discover():
+def discover(): # when clicked join, it is able to get code but not the name - fix it by adding enter name for everything cause the info is in differnt forms.
     session.clear()
     if request.method == "POST":
         #retrieve info from the form#
@@ -279,9 +347,11 @@ def chatMessage(message):
     hause = session.get("hause")
     color = session.get("color")
 
+    message_emoji = replace_msg(message["message"], emojis)
+
     message_to_be_sent = {
         "name" : name,
-        "message" : message["message"],
+        "message" : message_emoji,
         "date" : time.ctime(),
         "color" : color
     }
@@ -292,7 +362,12 @@ def chatMessage(message):
     for i in nword_list:
         if i in message["message"].lower():
             hauses[hause]["nwords"] += 1
-            emit("nwordcounter", {"nwords" : hauses[hause]["nwords"]}, room=hause)
+            if hauses[hause]["nwords"] < 30:
+                emit("nwordcounterlessthan30", {"nwords" : hauses[hause]["nwords"], "word" : nwordornwords(hauses[hause]["nwords"])}, room=hause)
+            elif hauses[hause]["nwords"] == 30:
+                emit("nwordcounter30", {"nwords" : hauses[hause]["nwords"]}, room=hause)
+            else:
+                emit("nwordcountermorethan30", {"nwords" : hauses[hause]["nwords"]}, room=hause)
             break
 
     #for debugging
