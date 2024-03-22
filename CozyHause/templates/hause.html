@@ -69,13 +69,58 @@
         var copy_hauseCode_button = document.getElementById("copy_hauseCode");
         copy_hauseCode_button.innerHTML = "Copied!";
         
-        //change it back to "Copy code after 1.25 seconds"
-        const changeBack = setTimeout(changeBackToCopy, 1250);
+        //change it back to "Copy code after 1.15 seconds"
+        const changeBack = setTimeout(changeBackToCopy, 1150);
         function changeBackToCopy() {
             copy_hauseCode_button.innerHTML ="<i class='fa-solid fa-copy'></i> Copy Code";
         }
     }
 
 </script>
+
+{% for msg in messageHistory[-10:] %}
+    <!-- connect -->
+    {% if msg['type'] == "connect" %}
+        <script type="text/javascript">
+            create_join_leave("{{msg['message']}}", "{{msg['date']}}")
+        </script>
+    {% elif msg['type'] == "connect_memberCount" %}
+        <script type="text/javascript">
+            create_memberCount_join("{{msg['message']}}", "{{msg['members']}}", "{{msg['hauseName']}}")
+        </script>
+
+    <!-- message -->
+    {% elif msg['type'] == "message" %}
+        <script type="text/javascript">
+            create_chatMessage("{{msg['name']}}", "{{msg['message']}}", "{{msg['date']}}", "{{msg['color']}}")
+        </script>
+
+    <!-- nword counter -->
+    {% elif msg['type'] == "nwordcounterlessthan30" %}
+        <script type="text/javascript">
+            create_nwordcounterlessthan30("{{msg['nwords']}}", "{{msg['word']}}")
+        </script>
+    {% elif msg['type'] == "nwordcounter30" %}
+        <script type="text/javascript">
+            nwordcounter30_nomusic()
+        </script>
+    {% elif msg['type'] == "nwordcountermorethan30" %}
+        <script type="text/javascript">
+            create_nwordcountermorethan30("{{msg['nwords']}}")
+        </script>
+
+    <!-- disconnect -->
+    {% elif msg['type'] == "disconnect" %}
+        <script type="text/javascript">
+            create_join_leave("{{msg['message']}}", "{{msg['date']}}")
+        </script>
+    {% elif msg['type'] == "disconnect_memberCount" %}
+        <script type="text/javascript">
+            create_memberCount_leave("{{msg['message']}}", "{{msg['members']}}", "{{msg['membersText']}}")
+        </script>
+
+    {% endif %}
+
+{% endfor %}
 
 {% endblock %}
