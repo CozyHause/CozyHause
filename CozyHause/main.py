@@ -318,7 +318,7 @@ def connect():
 
     connectStorage_member = {
         "message": join_messageMemberCount,
-        "members": hauses[hause]["members"],
+        "members": ordinal,
         "hauseName": hauseName,
         "type": "connect_memberCount"
     }
