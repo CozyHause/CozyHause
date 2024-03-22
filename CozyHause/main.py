@@ -247,7 +247,7 @@ def hause():
     if name is None or hause is None or hause not in hauses:
         return redirect(url_for("home"))
         
-    return render_template("hause.html", hauseCode=hause, hauseName=hauses[hause]["name"], messageHisory=hauses[hause]["messages"])
+    return render_template("hause.html", hauseCode=hause, hauseName=hauses[hause]["name"], messageHistory=hauses[hause]["messages"])
 
 @app.route('/discover', methods=["POST", "GET"])
 def discover(): # when clicked join, it is able to get code but not the name - fix it by adding enter name for everything cause the info is in differnt forms.
@@ -303,10 +303,27 @@ def connect():
     ordinal = convert_nth(hauses[hause]["members"])
     randomEnterVerb = random.choice(enterVerb)
 
+
     #emit a msg
     join_message = f"{name} has {randomEnterVerb} the Hause"
     join_messageMemberCount = f"{name} is the " #ordinal member of hauseName
 
+    #storing the data
+    connectStorage = {
+        "message": join_message,
+        "date": time.ctime(),
+        "type": "connect"
+    }
+    hauses[hause]["messages"].append(connectStorage)
+
+    connectStorage_member = {
+        "message": join_messageMemberCount,
+        "members": hauses[hause]["members"],
+        "hauseName": hauseName,
+        "type": "connect_memberCount"
+    }
+    hauses[hause]["messages"].append(connectStorage_member)
+    
     emit("join_leave", {"message" : join_message, "date": time.ctime()}, room=hause)
     emit("memberCount_join", {"message" : join_messageMemberCount, "members" : ordinal, "hauseName" : hauseName}, room=hause)
 
@@ -334,6 +351,22 @@ def disconnect():
         #emit a msg
         leave_message = f"{name} has {randomLeaveVerb} the Hause"
         leave_messageMemberCount = f"'{hauseName}' now{only}has " #{members} members
+
+        #storing the data
+        disconnectStorage = {
+            "message": leave_message,
+            "date": time.ctime(),
+            "type": "disconnect"
+        }
+        hauses[hause]["messages"].append(disconnectStorage)
+
+        disconnectStorage_member = {
+            "message": leave_messageMemberCount,
+            "members": hauses[hause]["members"],
+            "membersText": memberOrMembers_text,
+            "type": "disconnect_memberCount"
+        }
+        hauses[hause]["messages"].append(disconnectStorage_member)
         
         emit("join_leave", {"message" : leave_message, "date": time.ctime()}, room=hause)
         emit("memberCount_leave", {"message" : leave_messageMemberCount, "members" : hauses[hause]["members"], "membersText" : memberOrMembers_text}, room=hause)
@@ -353,9 +386,11 @@ def chatMessage(message):
         "name" : name,
         "message" : message_emoji,
         "date" : time.ctime(),
-        "color" : color
+        "color" : color,
+        "type" : "message"
     }
 
+    hauses[hause]["messages"].append(message_to_be_sent)
     emit("chatMessage_send", message_to_be_sent, room=hause)
 
     #N-Word Counter
@@ -363,15 +398,38 @@ def chatMessage(message):
         if i in message["message"].lower():
             hauses[hause]["nwords"] += 1
             if hauses[hause]["nwords"] < 30:
+                #storage
+                nwordcounterlessthan30Storage = {
+                    "nwords" : hauses[hause]["nwords"],
+                    "word" : nwordornwords(hauses[hause]["nwords"]),
+                    "type" : "nwordcounterlessthan30"
+                }
+                hauses[hause]["messages"].append(nwordcounterlessthan30Storage)
+                
                 emit("nwordcounterlessthan30", {"nwords" : hauses[hause]["nwords"], "word" : nwordornwords(hauses[hause]["nwords"])}, room=hause)
             elif hauses[hause]["nwords"] == 30:
+                #storage
+                nwordcounter30Storage = {
+                    "type" : "nwordcounter30"
+                }
+                hauses[hause]["messages"].append(nwordcounter30Storage)
+                
                 emit("nwordcounter30", {"nwords" : hauses[hause]["nwords"]}, room=hause)
             else:
+                #storage
+                nwordcountermorethan30Storage = {
+                    "nwords" : hauses[hause]["nwords"],
+                    "type" : "nwordcountermorethan30"
+                }
+                hauses[hause]["messages"].append(nwordcountermorethan30Storage)
+                
                 emit("nwordcountermorethan30", {"nwords" : hauses[hause]["nwords"]}, room=hause)
             break
 
     #for debugging
     print(f"{name} said {message['message']}. Code: {hause}")
+
+
 
 if __name__ == "__main__":
     socketio.run(app, host='0.0.0.0', debug=False, allow_unsafe_werkzeug=True)
