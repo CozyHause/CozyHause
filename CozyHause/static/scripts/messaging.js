@@ -88,6 +88,19 @@ const nwordcounter30 = () => {
     messages.scrollTo(0, messages.scrollHeight);
 };
 
+const nwordcounter30_nomusic = () => {
+    const nwordcounter_content = `
+        <div class="message">
+            <span>
+                <strong>N-Word Counter: </strong> THIS HAUSE HAS ATTAINED DIVINE COTTON FARMING POWERS!
+            </span>
+        </div>
+    `;
+    messages.innerHTML += nwordcounter_content;
+
+    messages.scrollTo(0, messages.scrollHeight);
+};
+
 const create_nwordcountermorethan30 = (nwords) => {
     const nwordcounter_content = `
         <div class="message">
@@ -150,4 +163,3 @@ document.getElementById('message').addEventListener("keypress", function(event) 
     document.getElementById("send").click();
   }
 });
-
