@@ -1,4 +1,4 @@
-# <a href="cozyhause.onrender.com">CozyHause</a> - The Extremely Cool Chatting App
+# <a href="https://cozyhause.onrender.com">CozyHause</a> - The Extremely Cool Chatting App
 ![CozyHause Logo1](https://github.com/CozyHause/CozyHause/assets/157870309/d4f8fec2-d230-4044-9e73-de11f4aacc64)
 
 ## Why would anyone use it?
